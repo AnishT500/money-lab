@@ -19,3 +19,5 @@
 .hero h1 em:after{bottom:8px}
 @media(max-width:760px){.path-time{display:none!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+
+main:focus{outline:none}
