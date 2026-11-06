@@ -4,14 +4,16 @@ import {createPortal} from 'react-dom';
 import {AnimatedIcon} from './AnimatedIcon.jsx';
 import {usePathname,useRouter} from 'next/navigation';
 import {mountMoneyLab} from '../lib/legacy-app.js';
-import {api,observeUser,googleSignIn,googleSignOut} from '../lib/firebase-client.js';
+import {api,observeUser,currentUser,googleSignIn,googleSignOut} from '../lib/firebase-client.js';
 import {pathFor} from '../lib/routes.js';
 export default function MoneyLab(){
-  const pathname=usePathname(),router=useRouter(),mounted=useRef(null),user=useRef(null);
+  const pathname=usePathname(),router=useRouter(),mounted=useRef(null);
   const [iconTargets,setIconTargets]=useState([]);
   useEffect(()=>{
-    mounted.current=mountMoneyLab({navigate:path=>router.push(path),api,getUser:()=>user.current,signIn:googleSignIn,signOut:googleSignOut,onRender:setIconTargets});
-    const unsubscribe=observeUser(value=>{user.current=value;mounted.current?.accountChanged(value);});
+    const unsubscribe=observeUser(value=>{
+      if(!mounted.current)mounted.current=mountMoneyLab({navigate:path=>router.push(path),api,getUser:currentUser,signIn:googleSignIn,signOut:googleSignOut,onRender:setIconTargets});
+      mounted.current.accountChanged(value);
+    });
     if(window.location.hash&&window.location.hash!=='#main')router.replace(pathFor(window.location.hash.slice(1)));
     return ()=>{unsubscribe();mounted.current?.destroy();mounted.current=null;};
   },[router]);
