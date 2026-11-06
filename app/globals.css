@@ -109,3 +109,31 @@ main:focus{outline:none}
   .notebook-row{flex-wrap:wrap}
   .notebook-row>div{flex-basis:60%}
 }
+
+/* Leave room above the receipt for its handwritten note. */
+.hero-lab{padding-top:54px;min-height:440px}
+.hero-lab .lab-annotation{top:0;right:12px;font-size:12px;line-height:1.55;max-width:150px}
+.hero-lab .annotation-arrow{top:42px;right:38px;width:65px;height:45px}
+.hero-meta{margin-top:16px;min-height:22px;align-items:flex-start;max-width:410px}
+.hero-meta>.icon{margin-top:3px;flex-shrink:0}
+.icon[data-animated-icon]{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.icon[data-animated-icon]>.icon,.lucide-motion,.lucide-motion svg{width:100%;height:100%}
+.lucide-motion{display:flex;align-items:center;justify-content:center}
+.mascot{transform-origin:50% 80%}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+  .mascot:hover,.stub-companion:hover .mascot,.stub-footer:hover .mascot{animation:stub-wiggle .7s ease-in-out;filter:drop-shadow(0 5px 4px #214f4015)}
+}
+@keyframes stub-wiggle{
+  0%,100%{translate:0 0;rotate:0deg}
+  25%{translate:0 -7px;rotate:-8deg}
+  50%{translate:0 -5px;rotate:7deg}
+  75%{translate:0 -3px;rotate:-4deg}
+}
+@media(max-width:540px){
+  .hero-lab{padding-top:46px;min-height:380px}
+  .hero-lab .lab-annotation{right:8px;font-size:11px}
+  .hero-lab .annotation-arrow{top:39px;right:25px;width:55px;height:38px}
+}
+@media(prefers-reduced-motion:reduce){
+  .mascot{animation:none!important;translate:none!important;rotate:none!important}
+}
