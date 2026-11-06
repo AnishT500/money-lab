@@ -604,4 +604,3 @@ export function AnimatedIcon({target,name}){
   },[target,Icon,reduced]);
   return Icon?<Icon ref={handle} size={21} className="lucide-motion" aria-hidden="true"/>:null;
 }
-

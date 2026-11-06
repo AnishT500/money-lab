@@ -25,4 +25,3 @@ export default function MoneyLab(){
     {iconTargets.map(({element,name,key})=>createPortal(<AnimatedIcon target={element} name={name}/>,element,key))}
   </>;
 }
-'
