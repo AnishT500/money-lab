@@ -8,7 +8,7 @@ export function generateStaticParams(){
 export async function generateMetadata({params}){
   const {slug=[]}=await params;
   const name=routeFor('/'+slug.join('/'));
-  const titles={home:'Money is learned.',lessons:'Learn',community:'Community',notebook:'Your notebook',practice:'Practice',internship:'Internship field guide',quiz:'Paycheck quiz',lesson:'Your first paycheck',saving:'Saving',credit:'Credit'};
+  const titles={home:'Financial literacy for students',overview:'Your first paycheck',summary:'Activity summary',lessons:'Learn',community:'Community',notebook:'Your progress',practice:'Practice',internship:'Internship field guide',quiz:'Paycheck quiz',lesson:'Your first paycheck',saving:'Saving',credit:'Credit'};
   return {title:titles[name]||'Money Lab'};
 }
 export default async function Page({params}){
