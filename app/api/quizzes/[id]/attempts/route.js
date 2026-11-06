@@ -1,0 +1,22 @@
+import {database} from '../../../../../lib/firebase-admin.js';
+import {body,endpoint,json,rateLimit,requireUser} from '../../../../../lib/api.js';
+import {attemptInput,HttpError} from '../../../../../lib/validation.js';
+import {questions,quizId} from '../../../../../lib/quiz.js';
+import {Timestamp} from 'firebase-admin/firestore';
+export const runtime='nodejs';
+export const dynamic='force-dynamic';
+export const POST=endpoint(async(request,{params})=>{
+  const user=await requireUser(request),{id}=await params;
+  if(id!==quizId)throw new HttpError(404,'Quiz not found.');
+  const answers=attemptInput(await body(request));
+  await rateLimit(user.uid,'quiz',20);
+  const ref=database().collection('quizzes').doc(quizId);
+  const quiz=await ref.get();
+  const bank=quiz.exists?quiz.data().questions:questions;
+  if(!quiz.exists)await ref.set({title:'Your first paycheck',version:1,questions});
+  const score=answers.filter((answer,i)=>answer===bank[i].correct).length;
+  const result={quizId,score,answers,total:bank.length,createdAt:Timestamp.now()};
+  const attempt=database().collection('users').doc(user.uid).collection('quizAttempts').doc();
+  await attempt.create(result);
+  return json({id:attempt.id,score,answers,total:bank.length},201);
+});

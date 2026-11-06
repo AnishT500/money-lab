@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // All app data goes through authenticated Node.js API routes.
+    // Admin SDK credentials stay on the server; browser access is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
