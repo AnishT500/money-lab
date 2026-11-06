@@ -149,3 +149,31 @@ body{line-height:1.65}.site-header{background:#fffefa;position:relative;z-index:
 @media(prefers-reduced-motion:reduce){.activity-feature:hover,.resource-card:hover{transform:none;translate:none}}
 .scenario-story{display:flex;align-items:center;gap:18px}.scenario-story .mascot{position:static;width:58px;height:74px;color:var(--green);flex-shrink:0}.scenario-story p{font-size:13px}.activity-step.is-complete .step-dot{background:var(--green);color:var(--white)}
 @media(max-width:540px){.scenario-story{gap:12px}.scenario-story .mascot{width:42px;height:54px}.step-list .path-step{min-height:44px}}
+/* One footer divider, with the secondary section kept close to it. */
+.home-extras{border-bottom:0;padding-bottom:22px}.footer{margin-top:12px;padding-top:22px}
+.icon-motion-wrap{display:flex;width:100%;height:100%;align-items:center;justify-content:center;transform-origin:center;will-change:transform}
+@media(prefers-reduced-motion:no-preference){
+ .reveal-on-scroll{opacity:0;transform:translateY(22px)}
+ .reveal-on-scroll.is-visible{animation:section-arrive .65s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms) both}
+ .hero-lab .receipt{animation:receipt-float 5s ease-in-out infinite;will-change:translate}
+ .hero-lab .hero-coin{animation:coin-bob 4.2s ease-in-out infinite;transform-origin:center}
+ .mascot-wave{animation:stub-idle 4s ease-in-out infinite}
+ .mascot-reading,.mascot-thinking{animation:stub-breathe 5s ease-in-out infinite}
+ .completion-heading>.mascot-celebrate{animation:stub-celebrate .95s ease-in-out 2}
+ .mascot-wave .stub-arms{animation:stub-wave-arm 2.8s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 90%}
+ .mascot:hover,.hero-lab:hover>.mascot,.activity-illustration:hover .mascot,.overview-mascot:hover .mascot,.sidebar-stub:hover .mascot,.stub-companion:hover .mascot{animation:stub-greet .95s ease-in-out infinite;filter:drop-shadow(0 8px 5px #214f4020)}
+ .btn{transition:background .2s,translate .25s,box-shadow .25s}
+ .btn:hover{translate:0 -3px;box-shadow:0 7px 16px #214f4020}
+ .btn:active{translate:0 0}
+ .preview-icon,.resource-icon,.step-dot{transition:background .2s,box-shadow .25s}
+ .preview-steps li:hover .preview-icon,.resource-card:hover .resource-icon{background:#d8e5d5;box-shadow:0 4px 12px #214f4014}
+}
+@keyframes section-arrive{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes receipt-float{0%,100%{translate:0 0;rotate:-1deg}50%{translate:0 -12px;rotate:1deg}}
+@keyframes coin-bob{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -10px;rotate:12deg}}
+@keyframes stub-idle{0%,65%,100%{translate:0 0;rotate:0deg}76%{translate:0 -9px;rotate:-7deg}88%{translate:0 -5px;rotate:6deg}}
+@keyframes stub-breathe{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -5px;rotate:3deg}}
+@keyframes stub-greet{0%,100%{translate:0 0;rotate:0deg;scale:1}25%{translate:0 -16px;rotate:-13deg;scale:1.12}55%{translate:0 -10px;rotate:12deg;scale:1.09}80%{translate:0 -4px;rotate:-6deg;scale:1.03}}
+@keyframes stub-wave-arm{0%,55%,100%{rotate:0deg}65%,85%{rotate:9deg}75%,95%{rotate:-7deg}}
+@keyframes stub-celebrate{0%,100%{translate:0 0;rotate:0deg}35%{translate:0 -22px;rotate:-10deg}65%{translate:0 -12px;rotate:10deg}}
+@media(prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1;transform:none}.receipt,.hero-coin,.mascot,.stub-arms{animation:none!important;translate:none!important;rotate:none!important;scale:none!important}.icon-motion-wrap{transform:none!important}}
