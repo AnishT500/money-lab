@@ -1,7 +1,7 @@
 'use client';
 // Adapted from lucide-animated.com (pqoqubbw), MIT. See LUCIDE-ANIMATED-LICENSE.txt.
 import {motion,useAnimation,useReducedMotion} from 'motion/react';
-import {forwardRef,useCallback,useImperativeHandle,useRef,useEffect} from 'react';
+import {forwardRef,useCallback,useImperativeHandle,useRef,useEffect,useState} from 'react';
 const cn = value => value || '';
 
 const ARROW_RIGHT_PATH_VARIANTS = {
@@ -590,17 +590,19 @@ export { ReceiptIcon };
 const animatedIcons={arrow:ArrowRightIcon,book:BookTextIcon,notebook:BookTextIcon,wallet:WalletIcon,chat:MessageCircleIcon,flask:FlaskIcon,receipt:ReceiptIcon};
 export function AnimatedIcon({target,name}){
   const handle=useRef(null),reduced=useReducedMotion();
+  const [active,setActive]=useState(false);
   const Icon=animatedIcons[name];
   useEffect(()=>{
     if(!Icon||reduced)return;
-    const host=target.closest('a,button')||target;
-    const start=()=>handle.current?.startAnimation();
-    const stop=()=>handle.current?.stopAnimation();
+    const host=target.closest('a,button,.preview-steps li,.overview-skills>span,.receipt')||target;
+    const start=()=>{setActive(true);handle.current?.startAnimation();};
+    const stop=()=>{setActive(false);handle.current?.stopAnimation();};
     host.addEventListener('pointerenter',start);
     host.addEventListener('pointerleave',stop);
     host.addEventListener('focusin',start);
     host.addEventListener('focusout',stop);
     return ()=>{host.removeEventListener('pointerenter',start);host.removeEventListener('pointerleave',stop);host.removeEventListener('focusin',start);host.removeEventListener('focusout',stop);};
   },[target,Icon,reduced]);
-  return Icon?<Icon ref={handle} size={21} className="lucide-motion" aria-hidden="true"/>:null;
+  return Icon?<motion.span className="icon-motion-wrap" animate={!reduced&&active?(name==='arrow'?{x:[0,7,0],scale:[1,1.18,1]}:{y:[0,-5,0],rotate:[0,-12,10,0],scale:[1,1.22,1]}):{x:0,y:0,rotate:0,scale:1}} transition={!reduced&&active?{duration:.85,repeat:Infinity,repeatDelay:.4,ease:'easeInOut'}:{duration:.2}}><Icon ref={handle} size={21} className="lucide-motion" aria-hidden="true"/></motion.span>:null;
 }
+
