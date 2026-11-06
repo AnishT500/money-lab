@@ -25,3 +25,19 @@ test('progress validates balances and removes arbitrary fields',()=>{
  assert.throws(()=>progressInput({...input,scenarioBase:{needs:400,wants:200,savings:201}}));
  assert.throws(()=>progressInput({...input,checks:[10]}));
 });
+
+test('progress writes stay ordered across page changes and retain their original payload',async()=>{
+ const {queueProgressSave,waitForProgressSave}=await import('../lib/legacy-app.js');
+ let release;const gate=new Promise(resolve=>{release=resolve});const writes=[];
+ const readUser=()=>({uid:'learner'});
+ const first=queueProgressSave('learner',readUser,async progress=>{await gate;writes.push(progress);},{completed:['lesson']});
+ const snapshot={completed:['lesson','quiz']};
+ const second=queueProgressSave('learner',readUser,async progress=>{writes.push(progress);},snapshot);
+ snapshot.completed.push('lab');release();await Promise.all([first,second]);await waitForProgressSave();
+ assert.deepEqual(writes,[{completed:['lesson']},{completed:['lesson','quiz']}]);
+ let called=false;await queueProgressSave('previous-user',readUser,async()=>{called=true;},{});
+ assert.equal(called,false);
+ await assert.rejects(queueProgressSave('learner',readUser,async()=>{throw Error('offline');},{}));
+ await queueProgressSave('learner',readUser,async()=>{called=true;},{});
+ assert.equal(called,true);
+});
